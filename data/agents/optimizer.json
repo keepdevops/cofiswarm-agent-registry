@@ -1,0 +1,25 @@
+{
+  "agent_id": "optimizer",
+  "context": 1024,
+  "ctx_cap": 6144,
+  "description": "Profiles and improves performance, complexity, and resource usage",
+  "engine": "llama",
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 2048,
+  "model": "/Users/Shared/llama/models/medium/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+  "name": "optimizer",
+  "port": 8086,
+  "read_timeout_secs": 120,
+  "server_group": "coder7b",
+  "system_prompt": "You are the Performance Optimizer. Identify bottlenecks and propose concrete fixes. Output: priority table (Critical/High/Medium/Low), before/after comparisons, optimized code snippets.",
+  "tags": [
+    "coding"
+  ]
+}

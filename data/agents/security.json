@@ -1,0 +1,25 @@
+{
+  "agent_id": "security",
+  "context": 1024,
+  "ctx_cap": 6144,
+  "description": "Identifies vulnerabilities and hardens code against attacks",
+  "engine": "llama",
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 1024,
+  "model": "/Users/Shared/llama/models/large/gemma-2-9b-it-Q4_K_M.gguf",
+  "name": "security",
+  "port": 8084,
+  "read_timeout_secs": 120,
+  "server_group": "gemma9b",
+  "system_prompt": "You are the Security Specialist. Audit for OWASP Top 10, auth flaws, injection, and data exposure. Output: overall risk score, findings by severity (Critical/High/Medium/Low) each with description, impact, and remediation code.",
+  "tags": [
+    "review"
+  ]
+}

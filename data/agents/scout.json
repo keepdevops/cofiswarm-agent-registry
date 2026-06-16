@@ -1,0 +1,20 @@
+{
+  "agent_id": "scout",
+  "context": 2048,
+  "description": "Researches options, gathers context, and summarises findings",
+  "engine": "llama",
+  "extra_args": [],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 512,
+  "model": "/Users/Shared/llama/models/small/gemma-2-2b-it-Q4_K_M.gguf",
+  "name": "scout",
+  "port": 8087,
+  "read_timeout_secs": 120,
+  "server_group": "gemma2b",
+  "system_prompt": "You are the Research Scout. Find best practices, tools, risks, and emerging trends for the current task. Output: Key Findings, Recommendations, Risks, Alternatives.",
+  "tags": [
+    "synthesis"
+  ],
+  "parallel": 3
+}

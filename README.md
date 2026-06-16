@@ -1,20 +1,35 @@
 # cofiswarm-agent-registry
 
-Cofiswarm component: `agent-registry`.
+Agent roster + mode configuration API (extracted from coordinator).
 
-- Layout: [REPO-STANDARD-LAYOUT](https://github.com/keepdevops/cofiswarmdev/blob/main/docs/REPO-STANDARD-LAYOUT.md)
-- Migration: [MIGRATION-SPRINTS](https://github.com/keepdevops/cofiswarmdev/blob/main/docs/MIGRATION-SPRINTS.md)
+- Migration: Sprint 7 in [MIGRATION-SPRINTS](https://github.com/keepdevops/cofiswarmdev/blob/main/docs/MIGRATION-SPRINTS.md)
+- SoT for agent JSON: `cofiswarm-config` — `data/agents/` is a mirror
+- Legacy C++: `legacy/cpp/`
 
-## FHS paths
+## HTTP (coordinator parity)
+
+| Route | Description |
+|-------|-------------|
+| `GET /healthz` | Liveness |
+| `GET /api/health` | `{"status":"ok","engine":"swarm-matrix"}` |
+| `GET /api/agents` | Agent list |
+| `PUT /api/agents/{name}/prompt` | Update system prompt (live; config mirror sprint 13) |
+| `GET /api/modes` | Mode catalog + active flag |
+| `GET/POST /api/modes/active` | Read/set active mode |
+| `GET/PUT /api/modes/{name}/agents` | Per-mode roster |
+
+Default listen: `:8012`.
+
+## Build & run
+
+```bash
+make build
+./bin/cofiswarm-agent-registry -swarm-config /etc/cofiswarm/config/swarm-config.json
+```
+
+## FHS
 
 | Path | Purpose |
 |------|---------|
-| `/etc/cofiswarm/agent-registry/` | config |
-| `/var/lib/cofiswarm/agent-registry/` | state |
-| `/var/log/cofiswarm/agent-registry/` | logs |
-
-## Test
-
-```bash
-./test/scripts/assert-layout.sh agent-registry
-```
+| `/etc/cofiswarm/config/swarm-config.json` | roster source (read) |
+| `/var/lib/cofiswarm/agent-registry/overrides.json` | mode roster overrides |

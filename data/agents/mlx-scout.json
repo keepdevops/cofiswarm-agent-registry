@@ -1,0 +1,18 @@
+{
+  "agent_id": "mlx-scout",
+  "context": 4096,
+  "description": "Lightweight MLX Llama-3.2-1B for fast summarization and question decomposition",
+  "engine": "mlx",
+  "extra_args": [],
+  "max_concurrency": 1,
+  "max_tokens": 512,
+  "model": "/Users/Shared/llama/models/MLX/MLX/Llama-3.2-1B-Instruct-4bit",
+  "name": "mlx-scout",
+  "port": 8083,
+  "read_timeout_secs": 120,
+  "server_group": "mlx1b",
+  "system_prompt": "You are a concise technical assistant. Summarize information clearly and identify the key question or task being asked. Be brief and direct.",
+  "tags": [
+    "synthesis"
+  ]
+}

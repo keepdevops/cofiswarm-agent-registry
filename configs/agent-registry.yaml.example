@@ -1,0 +1,3 @@
+listen: ":8012"
+swarm_config: /etc/cofiswarm/config/swarm-config.json
+state: /var/lib/cofiswarm/agent-registry/overrides.json

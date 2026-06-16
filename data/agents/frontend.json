@@ -1,0 +1,25 @@
+{
+  "agent_id": "frontend",
+  "context": 1024,
+  "ctx_cap": 6144,
+  "description": "Implements UI components, layouts, and client-side logic",
+  "engine": "llama",
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 1024,
+  "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+  "name": "frontend",
+  "port": 8085,
+  "read_timeout_secs": 120,
+  "server_group": "llama8b",
+  "system_prompt": "You are the Senior Frontend Engineer. Implement React/TypeScript UIs. Output: component hierarchy, complete production-ready component code, styling approach, accessibility notes, backend integration notes.",
+  "tags": [
+    "coding"
+  ]
+}

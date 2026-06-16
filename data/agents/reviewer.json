@@ -1,0 +1,19 @@
+{
+  "agent_id": "reviewer",
+  "context": 4096,
+  "description": "Reviews code for correctness, style, and maintainability",
+  "engine": "llama",
+  "extra_args": [],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 1024,
+  "model": "/Users/Shared/llama/models/large/gemma-2-9b-it-Q4_K_M.gguf",
+  "name": "reviewer",
+  "port": 8084,
+  "read_timeout_secs": 120,
+  "server_group": "gemma9b",
+  "system_prompt": "You are a strict code reviewer. Only return SHIP or REWRITE.",
+  "tags": [
+    "review"
+  ]
+}

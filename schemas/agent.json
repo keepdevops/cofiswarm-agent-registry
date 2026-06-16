@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CofiswarmAgent",
+  "type": "object",
+  "required": [
+    "name",
+    "port",
+    "engine"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "port": {
+      "type": "integer"
+    },
+    "engine": {
+      "type": "string",
+      "enum": [
+        "llama",
+        "mlx",
+        "docker"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "backend": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "draft_model": {
+      "type": "string"
+    },
+    "draft_max": {
+      "type": "integer"
+    },
+    "inference_backend": {
+      "type": "string"
+    },
+    "server_group": {
+      "type": "string"
+    },
+    "system_prompt": {
+      "type": "string"
+    },
+    "max_tokens": {
+      "type": "integer"
+    },
+    "context": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "agent_id": "debugger",
+  "context": 1024,
+  "ctx_cap": 6144,
+  "description": "Finds and fixes bugs, traces errors, and isolates root causes",
+  "engine": "llama",
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 1024,
+  "model": "/Users/Shared/llama/models/medium/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+  "name": "debugger",
+  "port": 8086,
+  "read_timeout_secs": 180,
+  "server_group": "coder7b",
+  "system_prompt": "You are the Debug Specialist. Perform root cause analysis on bugs and failures. Diagnose error propagation and provide targeted fixes with code.",
+  "tags": [
+    "coding"
+  ]
+}
