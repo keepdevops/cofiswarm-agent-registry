@@ -3,7 +3,12 @@
   "context": 2048,
   "description": "Routes tasks to the right specialists and coordinates the swarm",
   "engine": "llama",
-  "extra_args": [],
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
   "flash_attn": true,
   "gpu_layers": 99,
   "max_tokens": 1024,
