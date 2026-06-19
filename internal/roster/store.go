@@ -20,6 +20,18 @@ type Agent struct {
 	ServerGroup       string   `json:"server_group,omitempty"`
 	MaxTokens         int      `json:"max_tokens,omitempty"`
 	Tags              []string `json:"tags,omitempty"`
+	// Long-context + KV-memory tuning (consumed by cofiswarm-launcher at spawn).
+	Context       int      `json:"context,omitempty"`
+	CtxCap        int      `json:"ctx_cap,omitempty"`
+	FlashAttn     bool     `json:"flash_attn,omitempty"`
+	ExtraArgs     []string `json:"extra_args,omitempty"`
+	KVCacheType   string   `json:"kv_cache_type,omitempty"`
+	RopeScaling   string   `json:"rope_scaling,omitempty"`
+	RopeFreqBase  float64  `json:"rope_freq_base,omitempty"`
+	RopeFreqScale float64  `json:"rope_freq_scale,omitempty"`
+	YarnOrigCtx   int      `json:"yarn_orig_ctx,omitempty"`
+	YarnExtFactor float64  `json:"yarn_ext_factor,omitempty"`
+	TurboQuant    bool     `json:"turbo_quant,omitempty"`
 }
 
 type SwarmDoc struct {

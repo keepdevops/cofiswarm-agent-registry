@@ -52,6 +52,46 @@
     "context": {
       "type": "integer"
     },
+    "ctx_cap": {
+      "type": "integer"
+    },
+    "flash_attn": {
+      "type": "boolean"
+    },
+    "extra_args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "kv_cache_type": {
+      "type": "string",
+      "description": "KV cache quantization, e.g. \"q4_0\" or \"q4_0,q8_0\" (k,v)."
+    },
+    "rope_scaling": {
+      "type": "string",
+      "enum": [
+        "linear",
+        "yarn"
+      ],
+      "description": "RoPE context-extension method."
+    },
+    "rope_freq_base": {
+      "type": "number"
+    },
+    "rope_freq_scale": {
+      "type": "number"
+    },
+    "yarn_orig_ctx": {
+      "type": "integer"
+    },
+    "yarn_ext_factor": {
+      "type": "number"
+    },
+    "turbo_quant": {
+      "type": "boolean",
+      "description": "Route KV cache to the TurboQuant pilot cache type."
+    },
     "tags": {
       "type": "array",
       "items": {
