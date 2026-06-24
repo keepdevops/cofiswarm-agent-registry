@@ -15,10 +15,12 @@
   "model": "/Users/Shared/llama/models/large/gemma-2-9b-it-Q4_K_M.gguf",
   "name": "reviewer",
   "port": 8084,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "gemma9b",
   "system_prompt": "You are a strict code reviewer. Only return SHIP or REWRITE.",
   "tags": [
     "review"
-  ]
+  ],
+  "use_rag": true
 }
