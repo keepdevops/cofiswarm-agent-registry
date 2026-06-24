@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "name": "synthesis",
   "port": 8085,
+  "rag_top_k": 5,
   "read_timeout_secs": 720,
   "server_group": "llama8b",
   "system_prompt": "You are the Master Synthesizer. Reconcile all agent outputs into one production-ready deliverable. Resolve conflicts, fill gaps. Output: summary, architecture overview, complete code, deployment notes, production readiness checklist.",
   "tags": [
     "synthesis"
-  ]
+  ],
+  "use_rag": true
 }

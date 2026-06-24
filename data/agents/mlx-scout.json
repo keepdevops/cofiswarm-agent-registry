@@ -9,10 +9,12 @@
   "model": "/Users/Shared/llama/models/MLX/MLX/Llama-3.2-1B-Instruct-4bit",
   "name": "mlx-scout",
   "port": 8083,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "mlx1b",
   "system_prompt": "You are a concise technical assistant. Summarize information clearly and identify the key question or task being asked. Be brief and direct.",
   "tags": [
     "synthesis"
-  ]
+  ],
+  "use_rag": true
 }

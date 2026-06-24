@@ -16,11 +16,13 @@
   "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "name": "reflector",
   "port": 8085,
+  "rag_top_k": 5,
   "read_timeout_secs": 720,
   "server_group": "llama8b",
   "system_prompt": "You are the Reflection agent. Read recent interaction episodes and extract durable lessons worth remembering forever. Output ONLY a JSON array of {\"kind\":\"fact|preference|procedure\",\"text\":\"...\",\"id\":\"<optional-slug>\"}. At most 8 high-value, non-redundant lessons; output [] if nothing is worth keeping.",
   "tags": [
     "memory",
     "reflection"
-  ]
+  ],
+  "use_rag": true
 }
