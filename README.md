@@ -2,7 +2,7 @@
 
 Agent roster + mode configuration API (extracted from coordinator).
 
-- Migration: Sprint 7 in [MIGRATION-SPRINTS](https://github.com/keepdevops/cofiswarmdev/blob/main/docs/MIGRATION-SPRINTS.md)
+- Migration: Sprint 7 in [MIGRATION-SPRINTS](https://github.com/keepdevops/cofiswarm-docs/blob/main/MIGRATION-SPRINTS.md)
 - SoT for agent JSON: `cofiswarm-config` — `data/agents/` is a mirror
 - Legacy C++: `legacy/cpp/`
 
