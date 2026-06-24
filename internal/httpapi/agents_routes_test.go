@@ -57,6 +57,46 @@ func TestPostAgentValidAndInvalid(t *testing.T) {
 	}
 }
 
+func TestListProjectionExposesRagTargeting(t *testing.T) {
+	h := newTestServer(t)
+	// Register an agent that opts into per-agent RAG targeting.
+	rec := do(t, h, http.MethodPost, "/api/agents",
+		`{"name":"programmer","port":8086,"engine":"llama","use_rag":true,"rag_top_k":7,"rag_kinds":["code"]}`)
+	if rec.Code != http.StatusCreated {
+		t.Fatalf("POST: want 201, got %d (%s)", rec.Code, rec.Body)
+	}
+	// The list projection (what cofiswarm-dispatch reads) must surface the RAG fields.
+	rec = do(t, h, http.MethodGet, "/api/agents", "")
+	var list []map[string]any
+	_ = json.Unmarshal(rec.Body.Bytes(), &list)
+	var found map[string]any
+	for _, a := range list {
+		if a["name"] == "programmer" {
+			found = a
+		}
+	}
+	if found == nil {
+		t.Fatal("programmer not in list")
+	}
+	if found["use_rag"] != true {
+		t.Errorf("use_rag not in list projection: %+v", found)
+	}
+	if found["rag_top_k"].(float64) != 7 {
+		t.Errorf("rag_top_k not in list projection: %+v", found)
+	}
+	if kinds, ok := found["rag_kinds"].([]any); !ok || len(kinds) != 1 || kinds[0] != "code" {
+		t.Errorf("rag_kinds not in list projection: %+v", found)
+	}
+	// An agent without use_rag must NOT carry the key (omitempty parity).
+	for _, a := range list {
+		if a["name"] == "synthesis" {
+			if _, present := a["use_rag"]; present {
+				t.Errorf("use_rag leaked onto non-RAG agent: %+v", a)
+			}
+		}
+	}
+}
+
 func TestGetAgentByName(t *testing.T) {
 	h := newTestServer(t)
 	rec := do(t, h, http.MethodGet, "/api/agents/synthesis", "")

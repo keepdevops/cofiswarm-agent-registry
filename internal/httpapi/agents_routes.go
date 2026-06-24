@@ -31,6 +31,17 @@ func listProjection(a roster.Agent) map[string]any {
 	if a.InferenceBackend != "" {
 		obj["inference_backend"] = a.InferenceBackend
 	}
+	// Per-agent RAG targeting — surfaced in the list so cofiswarm-dispatch can resolve
+	// which agents opt into RAG without a full-record fetch per agent.
+	if a.UseRAG {
+		obj["use_rag"] = true
+	}
+	if a.RagTopK > 0 {
+		obj["rag_top_k"] = a.RagTopK
+	}
+	if len(a.RagKinds) > 0 {
+		obj["rag_kinds"] = a.RagKinds
+	}
 	return obj
 }
 
