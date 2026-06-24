@@ -33,6 +33,11 @@ type Agent struct {
 	YarnOrigCtx   int      `json:"yarn_orig_ctx,omitempty"`
 	YarnExtFactor float64  `json:"yarn_ext_factor,omitempty"`
 	TurboQuant    bool     `json:"turbo_quant,omitempty"`
+	// Per-agent RAG targeting (carried verbatim from swarm-config; consumed by
+	// cofiswarm-dispatch's prepare step to inject retrieved context for this agent).
+	UseRAG   bool     `json:"use_rag,omitempty"`
+	RagTopK  int      `json:"rag_top_k,omitempty"`
+	RagKinds []string `json:"rag_kinds,omitempty"`
 }
 
 type SwarmDoc struct {
