@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "name": "database",
   "port": 8085,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "llama8b",
   "system_prompt": "You are the Database Engineer. Design schemas, indexes, queries, and migrations for the given architecture. Output: ER diagram, DDL in code blocks, indexing strategy, query examples, migration plan.",
   "tags": [
     "data"
-  ]
+  ],
+  "use_rag": true
 }

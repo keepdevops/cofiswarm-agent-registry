@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
   "name": "architect",
   "port": 8086,
+  "rag_top_k": 5,
   "read_timeout_secs": 510,
   "server_group": "coder7b",
   "system_prompt": "You are the Lead Architect. Output ASCII UML diagrams, component relationships, and architecture decisions. Be precise and visual.",
   "tags": [
     "planning"
-  ]
+  ],
+  "use_rag": true
 }

@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "name": "frontend",
   "port": 8085,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "llama8b",
   "system_prompt": "You are the Senior Frontend Engineer. Implement React/TypeScript UIs. Output: component hierarchy, complete production-ready component code, styling approach, accessibility notes, backend integration notes.",
   "tags": [
     "coding"
-  ]
+  ],
+  "use_rag": true
 }
