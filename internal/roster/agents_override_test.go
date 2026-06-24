@@ -112,6 +112,48 @@ func TestOverridesPersistAcrossReload(t *testing.T) {
 	}
 }
 
+func TestRagTargetingFieldsRoundTrip(t *testing.T) {
+	dir := t.TempDir()
+	swarm := filepath.Join(dir, "swarm-config.json")
+	over := filepath.Join(dir, "overrides.json")
+	// A base agent that opts into per-agent RAG targeting (the fields CAPABILITIES.md
+	// tells users to set in swarm-config.json).
+	doc := `{"agents":[{"name":"programmer","port":8086,"engine":"llama",` +
+		`"use_rag":true,"rag_top_k":7,"rag_kinds":["code","doc"]}],"coordinator":{}}`
+	if err := os.WriteFile(swarm, []byte(doc), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	st, err := New(swarm, over)
+	if err != nil {
+		t.Fatalf("New: %v", err)
+	}
+
+	// 1. Fields survive the swarm-config load -> GET path (no silent drop).
+	a, ok := st.AgentByName("programmer")
+	if !ok {
+		t.Fatal("programmer not loaded")
+	}
+	if !a.UseRAG || a.RagTopK != 7 || len(a.RagKinds) != 2 || a.RagKinds[0] != "code" {
+		t.Fatalf("RAG fields not carried from swarm-config: %+v", a)
+	}
+
+	// 2. Fields survive an upsert + override persist + reload.
+	if _, err := st.UpsertAgent(Agent{
+		Name: "reviewer", Port: 8084, Engine: "llama",
+		UseRAG: true, RagTopK: 3, RagKinds: []string{"security"},
+	}); err != nil {
+		t.Fatalf("upsert: %v", err)
+	}
+	st2, err := New(swarm, over)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a, ok := st2.AgentByName("reviewer"); !ok || !a.UseRAG || a.RagTopK != 3 ||
+		len(a.RagKinds) != 1 || a.RagKinds[0] != "security" {
+		t.Errorf("RAG fields did not persist across reload: %+v ok=%v", a, ok)
+	}
+}
+
 func TestSetPromptPersists(t *testing.T) {
 	st, over := newTestStore(t)
 	if !st.SetPrompt("synthesis", "new prompt") {

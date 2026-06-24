@@ -92,6 +92,21 @@
       "type": "boolean",
       "description": "Route KV cache to the TurboQuant pilot cache type."
     },
+    "use_rag": {
+      "type": "boolean",
+      "description": "Inject retrieved RAG context into this agent's prompt (per-agent targeting)."
+    },
+    "rag_top_k": {
+      "type": "integer",
+      "description": "Number of chunks to retrieve for this agent when use_rag is set."
+    },
+    "rag_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Restrict this agent's RAG retrieval to these memory/document kinds."
+    },
     "tags": {
       "type": "array",
       "items": {
