@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/large/gemma-2-9b-it-Q4_K_M.gguf",
   "name": "security",
   "port": 8084,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "gemma9b",
   "system_prompt": "You are the Security Specialist. Audit for OWASP Top 10, auth flaws, injection, and data exposure. Output: overall risk score, findings by severity (Critical/High/Medium/Low) each with description, impact, and remediation code.",
   "tags": [
     "review"
-  ]
+  ],
+  "use_rag": true
 }

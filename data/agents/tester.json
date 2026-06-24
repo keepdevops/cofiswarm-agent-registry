@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "name": "tester",
   "port": 8085,
+  "rag_top_k": 5,
   "read_timeout_secs": 150,
   "server_group": "llama8b",
   "system_prompt": "You are the QA Engineer. Write comprehensive test plans and actual test code. Output: Unit, Integration, and E2E sections each with working test examples and edge cases.",
   "tags": [
     "review"
-  ]
+  ],
+  "use_rag": true
 }

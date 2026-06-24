@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
   "name": "optimizer",
   "port": 8086,
+  "rag_top_k": 5,
   "read_timeout_secs": 120,
   "server_group": "coder7b",
   "system_prompt": "You are the Performance Optimizer. Identify bottlenecks and propose concrete fixes. Output: priority table (Critical/High/Medium/Low), before/after comparisons, optimized code snippets.",
   "tags": [
     "coding"
-  ]
+  ],
+  "use_rag": true
 }

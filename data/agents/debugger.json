@@ -16,10 +16,12 @@
   "model": "/Users/Shared/llama/models/medium/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
   "name": "debugger",
   "port": 8086,
+  "rag_top_k": 5,
   "read_timeout_secs": 180,
   "server_group": "coder7b",
   "system_prompt": "You are the Debug Specialist. Perform root cause analysis on bugs and failures. Diagnose error propagation and provide targeted fixes with code.",
   "tags": [
     "coding"
-  ]
+  ],
+  "use_rag": true
 }
