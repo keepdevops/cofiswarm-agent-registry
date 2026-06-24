@@ -1,0 +1,26 @@
+{
+  "agent_id": "reflector",
+  "context": 1024,
+  "ctx_cap": 6144,
+  "description": "Distills recent interaction episodes into durable declarative memory (Phase C reflection)",
+  "engine": "llama",
+  "extra_args": [
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q8_0"
+  ],
+  "flash_attn": true,
+  "gpu_layers": 99,
+  "max_tokens": 1024,
+  "model": "/Users/Shared/llama/models/medium/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+  "name": "reflector",
+  "port": 8085,
+  "read_timeout_secs": 720,
+  "server_group": "llama8b",
+  "system_prompt": "You are the Reflection agent. Read recent interaction episodes and extract durable lessons worth remembering forever. Output ONLY a JSON array of {\"kind\":\"fact|preference|procedure\",\"text\":\"...\",\"id\":\"<optional-slug>\"}. At most 8 high-value, non-redundant lessons; output [] if nothing is worth keeping.",
+  "tags": [
+    "memory",
+    "reflection"
+  ]
+}
