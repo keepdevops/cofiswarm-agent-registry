@@ -2,6 +2,7 @@ package roster
 
 import (
 	"encoding/json"
+	"log"
 	"os"
 	"sync"
 )
@@ -43,13 +44,19 @@ type Store struct {
 	mu           sync.RWMutex
 	swarmPath    string
 	overridePath string
-	agents       []Agent
+	baseAgents   []Agent          // roster from swarm-config.json (read-only source)
+	agentOver    map[string]Agent // dynamic upserts/edits, persisted to overrides.json
+	removedNames map[string]bool  // tombstones hiding base agents, persisted
+	agents       []Agent          // effective roster = base + overrides - removed
 	modesConfig  map[string]any
 	activeMode   string
 }
 
 func New(swarmPath, overridePath string) (*Store, error) {
-	s := &Store{swarmPath: swarmPath, overridePath: overridePath, modesConfig: map[string]any{}}
+	s := &Store{
+		swarmPath: swarmPath, overridePath: overridePath,
+		modesConfig: map[string]any{}, agentOver: map[string]Agent{}, removedNames: map[string]bool{},
+	}
 	return s, s.Reload()
 }
 
@@ -63,7 +70,7 @@ func (s *Store) Reload() error {
 		return err
 	}
 	s.mu.Lock()
-	s.agents = doc.Agents
+	s.baseAgents = doc.Agents
 	if doc.Coordinator != nil {
 		if m, ok := doc.Coordinator["modes"].(map[string]any); ok {
 			s.modesConfig = m
@@ -76,8 +83,10 @@ func (s *Store) Reload() error {
 	if s.overridePath != "" {
 		if ob, err := os.ReadFile(s.overridePath); err == nil {
 			var ov struct {
-				ActiveMode  string         `json:"active_mode"`
-				ModesConfig map[string]any `json:"modes_config"`
+				ActiveMode    string           `json:"active_mode"`
+				ModesConfig   map[string]any   `json:"modes_config"`
+				Agents        map[string]Agent `json:"agents"`
+				RemovedAgents []string         `json:"removed_agents"`
 			}
 			if json.Unmarshal(ob, &ov) == nil {
 				s.mu.Lock()
@@ -87,10 +96,20 @@ func (s *Store) Reload() error {
 				for k, v := range ov.ModesConfig {
 					s.modesConfig[k] = v
 				}
+				if ov.Agents != nil {
+					s.agentOver = ov.Agents
+				}
+				s.removedNames = map[string]bool{}
+				for _, n := range ov.RemovedAgents {
+					s.removedNames[n] = true
+				}
 				s.mu.Unlock()
 			}
 		}
 	}
+	s.mu.Lock()
+	s.rebuildAgentsLocked()
+	s.mu.Unlock()
 	return nil
 }
 
@@ -99,9 +118,15 @@ func (s *Store) persistOverrides() error {
 		return nil
 	}
 	s.mu.RLock()
+	removed := make([]string, 0, len(s.removedNames))
+	for n := range s.removedNames {
+		removed = append(removed, n)
+	}
 	payload := map[string]any{
-		"active_mode":  s.activeMode,
-		"modes_config": s.modesConfig,
+		"active_mode":    s.activeMode,
+		"modes_config":   s.modesConfig,
+		"agents":         s.agentOver,
+		"removed_agents": removed,
 	}
 	s.mu.RUnlock()
 	b, err := json.MarshalIndent(payload, "", "  ")
@@ -150,16 +175,23 @@ func (s *Store) HasAgent(name string) bool {
 	return false
 }
 
+// SetPrompt overrides an agent's system prompt and PERSISTS it (closes the prior in-memory-only
+// gap). Works for base agents (creates an override carrying the new prompt) and dynamic agents.
 func (s *Store) SetPrompt(name, prompt string) bool {
 	s.mu.Lock()
-	defer s.mu.Unlock()
-	for i := range s.agents {
-		if s.agents[i].Name == name {
-			s.agents[i].SystemPrompt = prompt
-			return true
-		}
+	cur, ok := s.findAgentLocked(name)
+	if !ok {
+		s.mu.Unlock()
+		return false
 	}
-	return false
+	cur.SystemPrompt = prompt
+	s.agentOver[name] = cur
+	s.rebuildAgentsLocked()
+	s.mu.Unlock()
+	if err := s.persistOverrides(); err != nil {
+		log.Printf("[roster] persist prompt override for %q failed: %v", name, err)
+	}
+	return true
 }
 
 func (s *Store) ActiveMode() string {

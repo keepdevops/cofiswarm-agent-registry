@@ -29,33 +29,7 @@ func (s *Server) Handler() http.Handler {
 		cors(w)
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "ok", "engine": "swarm-matrix"})
 	})
-	mux.HandleFunc("/api/agents", func(w http.ResponseWriter, _ *http.Request) {
-		cors(w)
-		list := []map[string]any{}
-		for _, a := range s.store.Agents() {
-			obj := map[string]any{"name": a.Name, "port": a.Port, "engine": a.Engine}
-			if a.Description != "" {
-				obj["description"] = a.Description
-			}
-			if a.Backend != "" {
-				obj["backend"] = a.Backend
-			}
-			if a.Model != "" {
-				obj["model"] = a.Model
-			}
-			if a.DraftModel != "" {
-				obj["draft_model"] = a.DraftModel
-			}
-			if a.DraftMax > 0 {
-				obj["draft_max"] = a.DraftMax
-			}
-			if a.InferenceBackend != "" {
-				obj["inference_backend"] = a.InferenceBackend
-			}
-			list = append(list, obj)
-		}
-		_ = json.NewEncoder(w).Encode(list)
-	})
+	mux.HandleFunc("/api/agents", s.handleAgents)
 	mux.HandleFunc("/api/modes", func(w http.ResponseWriter, _ *http.Request) {
 		cors(w)
 		cur := s.store.ActiveMode()
@@ -130,35 +104,3 @@ func (s *Server) handleModeSub(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s *Server) handleAgentSub(w http.ResponseWriter, r *http.Request) {
-	cors(w)
-	if r.Method != http.MethodPut {
-		http.Error(w, "PUT only", http.StatusMethodNotAllowed)
-		return
-	}
-	path := strings.TrimPrefix(r.URL.Path, "/api/agents/")
-	parts := strings.Split(path, "/")
-	if len(parts) != 2 || parts[1] != "prompt" {
-		http.NotFound(w, r)
-		return
-	}
-	name := parts[0]
-	var body struct {
-		SystemPrompt string `json:"system_prompt"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.SystemPrompt == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		_ = json.NewEncoder(w).Encode(map[string]string{"error": "missing 'system_prompt' string"})
-		return
-	}
-	if !s.store.HasAgent(name) {
-		w.WriteHeader(http.StatusNotFound)
-		_ = json.NewEncoder(w).Encode(map[string]any{"error": "unknown agent", "name": name})
-		return
-	}
-	live := s.store.SetPrompt(name, body.SystemPrompt)
-	_ = json.NewEncoder(w).Encode(map[string]any{
-		"name": name, "system_prompt": body.SystemPrompt,
-		"persisted": false, "live": live, "note": "mirror to cofiswarm-config in sprint 13",
-	})
-}
