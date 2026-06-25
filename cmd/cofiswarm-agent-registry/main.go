@@ -60,7 +60,10 @@ func main() {
 	stopWatch := func() {}
 	if base := os.Getenv("COFISWARM_BRIDGE_URL"); base != "" {
 		pub = buspresence.New(base)
-		announce := func() { pub.AnnounceMembers(agentMembers(store.Agents())) }
+		announce := func() {
+			pub.Announce("agent-registry", map[string]any{"name": "agent-registry"})
+			pub.AnnounceMembers(agentMembers(store.Agents()))
+		}
 		announce()
 		var wctx context.Context
 		wctx, stopWatch = context.WithCancel(context.Background())
@@ -84,6 +87,7 @@ func main() {
 	log.Printf("agent-registry: shutting down")
 	stopWatch()
 	if pub != nil {
+		pub.Goodbye("agent-registry")
 		pub.GoodbyeMembers(agentMembers(store.Agents()))
 	}
 	shutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
